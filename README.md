@@ -1,6 +1,6 @@
 # ElementalController iOS Sample App
 ### Overview
-This is an iOS client application created using [ElementalController](https://github.com/robreuss/ElementalController) for demo purposes.  It is designed to be used with it's server-side Linux counterpart [ElementalController Linux Sample App](https://github.com/robreuss/ElementalController_Linux_Sample.git), which has been tested to run under Ubuntu Mate on a Raspberry Pi as well as desktop Ubuntu 16.04.  Although it has not been tested on Raspbian, the framework has and it should work.    
+This is an iOS client application created using [ElementalController](https://github.com/robreuss/ElementalController) for demo purposes.  It is designed to be used with it's server-side Linux / macOS counterpart [ElementalController Linux Sample App](https://github.com/robreuss/ElementalController_Linux_Sample.git), which has been tested to run under Ubuntu Mate on a Raspberry Pi, desktop Ubuntu 16.04 and macOS.  Although it has not been tested on Raspbian, the framework has and it should work.    
 
 The two apps mimic a scenario where an iOS app is being used to control a Raspberry Pi-based robot vehicle, by sending commands and a speed value, along with motion data, just for demo purposes.  There is no actual robot involved.
 
