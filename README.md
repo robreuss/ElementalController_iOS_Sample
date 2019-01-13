@@ -12,7 +12,8 @@ Use the command line to go into the project directory and update the frameworks 
 ```
 carthage update
 ```
-Use Finder to go into the `Carthage/Build` directory and drag the `ElementalController.framework` file into the target "Embedded Binaries" section.
+
+Probably not, but it may be necessary to use Finder to go into the `Carthage/Build` directory and drag the `ElementalController.framework` file into the target "Embedded Binaries" section.
 
 The app should build and run at that point.  Next step is to setup the [Linux counterpart](https://github.com/robreuss/ElementalController_Linux_Sample.git) and start sending data back and forth!
 
