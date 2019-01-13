@@ -89,12 +89,22 @@
                                 <color key="textColor" red="0.0" green="0.41176471110000001" blue="0.85098040100000005" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJ9-9p-gfN">
+                                <rect key="frame" x="16" y="499" width="341" height="53"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="Send motion data"/>
+                                <connections>
+                                    <action selector="motion:" destination="BYZ-38-t0r" eventType="touchUpInside" id="B2K-b0-aOv"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="browse" destination="bnU-Ch-bgy" id="MOt-wa-u0z"/>
+                        <outlet property="motion" destination="gJ9-9p-gfN" id="ZmD-fe-GSG"/>
                         <outlet property="service" destination="MPU-xQ-X6K" id="K5V-uP-QOy"/>
                         <outlet property="speed" destination="UDP-Ig-ulu" id="6q2-Ay-qhD"/>
                     </connections>
