@@ -11,7 +11,10 @@ import ElementalController
 import CoreMotion
 
 class ViewController: UIViewController {
-
+    
+    // MARK: -
+    // MARK: Vars
+    
     // Define element identifiers which are transmitted with each
     // element message to identify the eleent to the recieving end
     let eid_forward: Int8 = 1
@@ -40,13 +43,15 @@ class ViewController: UIViewController {
     // For demo purposes
     let manager = CMMotionManager()
     
+    // MARK: -
+    // MARK: Just UI stuff
     @IBOutlet weak var browse: UIButton!
     @IBAction func browse(_ sender: Any) {
         elementalController.browser.browseFor(serviceName: serviceName)
         browse.setTitle("Browsing for \(serviceName)", for: .normal)
         service.setTitle("No service available", for: .normal)
     }
-   
+    
     @IBOutlet weak var service: UIButton!
     @IBAction func service(_ sender: Any) {
         if (serverDevice?.isConnected)! {
@@ -90,7 +95,7 @@ class ViewController: UIViewController {
     @IBAction func backwards(_ sender: Any) {
         sendDirection(eid: (sender as! UIView).tag)
     }
-
+    
     @IBOutlet weak var motion: UIButton!
     @IBAction func motion(_ sender: Any) {
         guard let device = serverDevice else { return }
@@ -125,12 +130,15 @@ class ViewController: UIViewController {
         
     }
     
+    // MARK: -
+    // MARK: Core functionality
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Determines if networking occurs over IPv4 or IPv6
         ElementalController.protocolFamily = .inet6
-
+        
         // Initializes the browser for use in setting up event handlers
         // Pass an empty string as the device name and the host name of your
         // device or machine will be used.
@@ -156,27 +164,22 @@ class ViewController: UIViewController {
             let elementRight = serverDevice.attachElement(Element(identifier: self.eid_right, displayName: "Right", proto: .tcp, dataType: .Double))
             let elementLeft = serverDevice.attachElement(Element(identifier: self.eid_left, displayName: "Left", proto: .tcp, dataType: .Double))
             let elementSpeed = serverDevice.attachElement(Element(identifier: self.eid_speed, displayName: "Speed", proto: .udp, dataType: .Float))
-            let elementMotionX = serverDevice.attachElement(Element(identifier: self.eid_motionX, displayName: "Motion X", proto: .udp, dataType: .Double))
-            let elementMotionY = serverDevice.attachElement(Element(identifier: self.eid_motionY, displayName: "Motion Y", proto: .udp, dataType: .Double))
-            let elementMotionZ = serverDevice.attachElement(Element(identifier: self.eid_motionZ, displayName: "Motion Z", proto: .udp, dataType: .Double))
+            let _ = serverDevice.attachElement(Element(identifier: self.eid_motionX, displayName: "Motion X", proto: .udp, dataType: .Double))
+            let _ = serverDevice.attachElement(Element(identifier: self.eid_motionY, displayName: "Motion Y", proto: .udp, dataType: .Double))
+            let _ = serverDevice.attachElement(Element(identifier: self.eid_motionZ, displayName: "Motion Z", proto: .udp, dataType: .Double))
             
-            // These are generally not necessary - they are handlers when the server sends a
+            // The following handlers are generally not necessary - they are handlers when the server sends a
             // reply to our elements in a request/response model
-            elementForward.handler = { element, device in
-                logDebug("Recieved response to forward: \(element.value ?? "Unknown Value")")
+            
+            // Define our handler one time and apply it to muliple elements
+            let directionHandler: Element.ElementHandler = { element, device in
+                logDebug("Recieved response to \(element.displayName): \(element.value ?? "Unknown Value")")
             }
-            elementBackward.handler = { element, device in
-                logDebug("Recieved response to backward: \(element.value ?? "Unknown Value")")
-            }
-            elementRight.handler = { element, device in
-                logDebug("Recieved response to right: \(element.value ?? "Unknown Value")")
-            }
-            elementLeft.handler = { element, device in
-                logDebug("Recieved response to left:\(element.value ?? "Unknown Value")")
-            }
-            elementSpeed.handler = { element, device in
-                logDebug("Recieved response to speed:\(element.value ?? "Unknown Value")")
-            }
+            elementForward.handler = directionHandler
+            elementBackward.handler = directionHandler
+            elementRight.handler = directionHandler
+            elementLeft.handler = directionHandler
+            elementSpeed.handler = directionHandler
             
             // What to do when the device disconnects
             serverDevice.events.deviceDisconnected.handler = { _ in
@@ -200,6 +203,7 @@ class ViewController: UIViewController {
             
         }
     }
-
+    
 }
+
 
