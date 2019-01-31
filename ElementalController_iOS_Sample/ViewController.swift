@@ -64,10 +64,11 @@ class ViewController: UIViewController {
     func sendDirection(eid: Int) {
         guard let device = serverDevice else { return }
         guard let element = device.getElementWith(identifier: Int8(eid)) else { return }
-        element.value = 1.0
-        guard device.send(element: element) else {
-            logDebug("Direction \(element.displayName) send failed")
-            return
+        element.doubleValue = 1.0
+        do {
+            try device.send(element: element)
+        } catch {
+            logDebug("Direction \(element.displayName) send failed: \(error)")
         }
     }
     
@@ -76,13 +77,14 @@ class ViewController: UIViewController {
         guard let device = serverDevice else { return }
         guard let element = device.getElementWith(identifier: eid_speed) else { return }
         speed.text = "Speed is \((sender as! UISlider).value)"
-        element.value = (sender as! UISlider).value
-        guard device.send(element: element) else {
-            logDebug("Speed send failed")
-            return
+        element.floatValue = (sender as! UISlider).value
+        do {
+            try device.send(element: element)
+        } catch {
+            logDebug("Speed send failed: \(error)")
         }
     }
-    
+
     @IBAction func forward(_ sender: Any) {
         sendDirection(eid: (sender as! UIView).tag)
     }
@@ -110,20 +112,23 @@ class ViewController: UIViewController {
             guard let elementMotionY = device.getElementWith(identifier: self.eid_motionY) else { return }
             guard let elementMotionZ = device.getElementWith(identifier: self.eid_motionZ) else { return }
             manager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
-                elementMotionX.value = data?.acceleration.x
-                guard device.send(element: elementMotionX) else {
-                    logDebug("\(elementMotionX.displayName) send failed")
-                    return
+                elementMotionX.doubleValue = (data?.acceleration.x)!
+                do {
+                    try device.send(element: elementMotionX)
+                } catch {
+                    logDebug("\(elementMotionX.displayName) send failed: \(error)")
                 }
-                elementMotionY.value = data?.acceleration.y
-                guard device.send(element: elementMotionY) else {
-                    logDebug("\(elementMotionY.displayName)  send failed")
-                    return
+                elementMotionY.doubleValue = (data?.acceleration.y)!
+                do {
+                    try device.send(element: elementMotionY)
+                } catch {
+                    logDebug("\(elementMotionY.displayName) send failed: \(error)")
                 }
-                elementMotionZ.value = data?.acceleration.z
-                guard device.send(element: elementMotionZ) else {
-                    logDebug("\(elementMotionZ.displayName)  send failed")
-                    return
+                elementMotionZ.doubleValue = (data?.acceleration.z)!
+                do {
+                    try device.send(element: elementMotionZ)
+                } catch {
+                    logDebug("\(elementMotionZ.displayName) send failed: \(error)")
                 }
             }
         }
@@ -173,7 +178,7 @@ class ViewController: UIViewController {
             
             // Define our handler one time and apply it to muliple elements
             let directionHandler: Element.ElementHandler = { element, device in
-                logDebug("Recieved response to \(element.displayName): \(element.value ?? "Unknown Value")")
+                logDebug("Recieved response to \(element.displayName): \(element.doubleValue)")
             }
             elementForward.handler = directionHandler
             elementBackward.handler = directionHandler
